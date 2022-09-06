@@ -71,6 +71,11 @@ for x in attributes:
 
 layout = [
 [sg.Text(" - GPT-J Character Creator - ")],
+
+[sg.Text("temp:"), sg.Input("1.5", key="-temp-")],
+[sg.Text("topK:"), sg.Input("50", key="-topK-")],
+[sg.Text("topP:"), sg.Input("1", key="-topP-")],
+
 [sg.Menu(menu_def, pad=(0,0))], 
 [sg.Push(), sg.Column(element, size=(500,700), scrollable=True, pad=(0,0)), sg.Push()]
 
@@ -89,6 +94,12 @@ def regenerateCharacter():
             charA = charA + x + ": " + val + "\n"
     # print("POOPFART :\n" + charA)
     return charA
+    
+def convert_to_float(string):
+    # remove all non digits
+    string = ''.join(c for c in string if c.isdigit() or c == '.')
+    # convert to float
+    return float(string)
             
 
 def generateValue(element):
@@ -101,7 +112,9 @@ def generateValue(element):
     
     prompt = example + "\n" + example2 + "\n" + character + "" + element + ":"
     
-    model_inputs = { "text": prompt, "length": 8, "temperature": 0.9, "topK": 50, "topP": 0.9}
+    # model_inputs = { "text": prompt, "length": 8, "temperature": convert_to_float(values["-temp-"]), "topK": convert_to_float(values["-topK-"]), "topP": convert_to_float(values["-topP-"])}
+    
+    model_inputs = { "text": prompt, "length": 8, "temperature": 1.5, "topK": 50, "topP":1 }
             
     print("generating...")
     
@@ -134,6 +147,8 @@ def printCharacter():
     print("----------- CHARACTER ---------------")
     print(character)
     print("-------------------------------------")
+    
+
 
 
 # Create the window 
